@@ -1,0 +1,18 @@
+---
+title: "Directory Overview"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+See [DTU Learn page](https://learn.inside.dtu.dk/content/enforced/102974-OFFERING-653081/lab11_12_13/lab_11_12_13_project_organisation.html) for full explanation
+
+Where: <br />
+- **01_load.R:** Collapse data to a single file or convert .xlsx to .tsv, here we could imagine having an .xlsx-file with multiple sheets, from which we create a single .tsv <br />
+- **02_clean.R:** Remove invalid data, e.g. if you have amino acid sequence data, remove non-valid sequences containing X or other non-standard amino acid characters or fix columns, e.g. dates or when two labels are the same, but spelled differently <br />
+- **03_augment.R:** Add new variables to your data <br />
+- **04_analysis_i.R:** Analysis number 1 <br />
+- **05_analysis_ii.R:** Analysis number 2 <br />
+- **99_project_functions.R** holds all the functions pertaining to the project 
