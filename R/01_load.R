@@ -1,14 +1,22 @@
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
+library("readxl")
 library("fs")
 
 # Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
+#source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
-my_data_raw <- read_tsv(file = "data/_raw/my_raw_data.tsv")
+read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1) %>% 
+  write_csv2(file = "./data/SD1_converted.csv") 
 
+SD1_raw <- as_tibble(read_csv2(file = "./data/SD1_converted.csv"))
+
+read_excel(path = "./data/_raw/SD2_excel.xlsx", skip = 1) %>% 
+  write_csv2(file = "./data/SD2_converted.csv") 
+
+SD2_raw <- as_tibble(read_csv2(file = "./data/SD2_converted.csv"))
 
 # Wrangle data ------------------------------------------------------------
 my_data <- my_data_raw # %>% ...
