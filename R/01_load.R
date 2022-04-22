@@ -25,6 +25,9 @@ SD1_clean <-
   separate(`Taxonomic classification`, into = c("k", "domain", "p", "phylum", "c", "className", "o", "order", "f", "family", "g", "genus")) %>%
   select(-k, -p, -c, -o, -g, -f)
 
+SD2_clean <- SD2_raw
+
+
 # Write data --------------------------------------------------------------
 write_tsv(x = my_data,
           file = "data/01_my_data.tsv")
