@@ -153,6 +153,9 @@ pl4+pl5+pl6
 
 
 
+SD2_clean <- SD2_raw
+
+
 # Write data --------------------------------------------------------------
 write_tsv(x = my_data,
           file = "data/01_my_data.tsv")
