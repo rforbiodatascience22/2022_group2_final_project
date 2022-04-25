@@ -46,6 +46,13 @@ pl1 <- ggplot(data1, aes(fill=domain, y=ValueA, x=ISSCapoA)) +
   scale_fill_manual(values = c("lightblue", "deepskyblue4"))
 pl1
 
+  
+# data for seeing ISSCapoA3
+SD1_clean_a3 <- 
+  SD1_clean%>%
+  select(domain, ISSCapoA3)%>%
+  filter(domain == "Archaea")
+
 
 #Creating data2 and plot 2 for ISS Session B,  Stratified with domain
 
