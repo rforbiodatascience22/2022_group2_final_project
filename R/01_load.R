@@ -25,10 +25,11 @@ SD2_raw <-
 
 #Wrangling Supplementary data1
 
-SD1_clean <-
-  SD1_raw %>%
-  separate(`Taxonomic classification`, into = c("k", "domain", "p", "phylum", "c", "className", "o", "order", "f", "family", "g", "genus")) %>%
-  select(-k, -p, -c, -o, -g, -f)
+SD1_clean <- 
+  SD1_raw %>% 
+  mutate(`Taxonomic classification` = str_replace_all(`Taxonomic classification`, pattern = "[:alpha:]__", "")) %>% 
+  separate(col = `Taxonomic classification`, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ';') %>% 
+  na_if("")
 SD1_clean
 
 #Creating data1 and plot 1 for ISS Session A,  Stratified with domain
