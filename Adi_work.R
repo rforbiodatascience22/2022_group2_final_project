@@ -24,9 +24,16 @@ SD2_raw <-
 #source(file = "R/99_project_functions.R")
 
 
-#plots for supplementary data 2----------------------------
-#day 4 : 
+#day 4 :
 
-#fig 4 Shotgun metagenome-based taxonomic information from ISS locations
+#plots for supplementary data 2----------------------------
+#fig4: Shotgun metagenome-based taxonomic information from ISS locations
 
 #create data for fig 4 
+SD2_data <- SD2_clean %>% 
+  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C)
+
+
+
+
+
