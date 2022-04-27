@@ -12,7 +12,8 @@ library(patchwork)
 # Load data ---------------------------------------------------------------
 
 SD1_raw <- 
-  read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1)write_csv2(file = "./data/SD1_converted.csv") %>% 
+  read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1) %>% 
+  write_csv2(file = "./data/SD1_converted.csv") %>% 
   as_tibble()
 
 
