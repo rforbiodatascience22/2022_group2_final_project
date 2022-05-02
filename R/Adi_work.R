@@ -22,9 +22,9 @@ SD2_raw <-
 
 
 #method 3 using mutate function
-SD2_clean <- SD2_raw
 
-SD2_table <- SD2_clean %>% 
+
+SD2_table <- SD2_raw %>% 
   mutate (COLA1 = sqrt(COLA1/sum(COLA1)),
           COLB1 = sqrt(COLB1/sum(COLB1)),
           N2A = sqrt(N2A/sum(N2A)),

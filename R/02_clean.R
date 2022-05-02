@@ -1,6 +1,6 @@
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
-
+library("readxl")
 
 # Define functions --------------------------------------------------------
 source(file = "R/99_project_functions.R")
@@ -33,11 +33,40 @@ SD2_clean <- SD2_raw %>%
           N1C = sqrt(N1C/sum(N1C)))
 
 #data for figure 4: supplementary data 2
-SD2_table <- SD2_clean %>% 
+SD2_data <- SD2_table %>% 
+  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) 
+
+#plot 1 abundance sqrt(TSS) vs domain
+plot1 <- SD2_data %>%
+  filter(domain == "Archaea" | 
+           domain == "Bacteria" | 
+           domain == "Eukaryota" | 
+           domain == "Viruses")  %>%
+  ggplot(mapping = aes(x = ISSlocation,
+                       y = ValueL, 
+                       fill = domain)) + 
+  geom_bar(position = "fill",
+           stat="identity") +
+  
+  #ylim(0, 15) +
+  #scale_y_continuous(labels = scales::percent) +
+  #scale_y_continuous(breaks = seq(0, 15, 5), 
+  #limits=c(0, 15))
+  
+  labs(x= "ISS Locations",
+       y = "Abundance (TSS)") +
+  #names.arg = c("COLA1", "COLB1", "N2A", "N2B", "N3C1", "N1C")) 
+  theme(axis.text.x = element_blank())
+#scale_fill_manual(values = c("", "", "", ""))
+
+plot1
+
+
+#data for plot 2 and plot 3
+SD2_data <- SD2_table %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
   arrange(desc(ValueL)) %>% 
   top_n(100)
-
 
 
 
