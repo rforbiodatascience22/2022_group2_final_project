@@ -22,6 +22,11 @@ SD2_raw <-
 
 # Wrangle data ------------------------------------------------------------
 
+# data wrangling and visualization supplementary data 1
+
+
+
+
 
 # data wrangling and visualization supplementary data 2
 SD2_clean <- SD2_raw %>% 
@@ -32,11 +37,12 @@ SD2_clean <- SD2_raw %>%
           N3C1 = sqrt(N3C1/sum(N3C1)),
           N1C = sqrt(N1C/sum(N1C)))
 
+
 #data for figure 4: supplementary data 2
-SD2_data <- SD2_table %>% 
+SD2_data <- SD2_clean %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) 
 
-#plot 1 abundance sqrt(TSS) vs domain
+#plot 1 Abundance sqrt(TSS) vs domain
 plot1 <- SD2_data %>%
   filter(domain == "Archaea" | 
            domain == "Bacteria" | 
@@ -47,26 +53,43 @@ plot1 <- SD2_data %>%
                        fill = domain)) + 
   geom_bar(position = "fill",
            stat="identity") +
-  
-  #ylim(0, 15) +
-  #scale_y_continuous(labels = scales::percent) +
-  #scale_y_continuous(breaks = seq(0, 15, 5), 
-  #limits=c(0, 15))
-  
   labs(x= "ISS Locations",
-       y = "Abundance (TSS)") +
-  #names.arg = c("COLA1", "COLB1", "N2A", "N2B", "N3C1", "N1C")) 
+       y = "Abundance sqrt(TSS)") +
   theme(axis.text.x = element_blank())
 #scale_fill_manual(values = c("", "", "", ""))
-
 plot1
 
 
+
 #data for plot 2 and plot 3
-SD2_data <- SD2_table %>% 
+SD2_top_100 <- SD2_clean %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
   arrange(desc(ValueL)) %>% 
   top_n(100)
+
+#plot 2: Abundance sqrt(TSS) vs phylum
+SD2_top_100 %>%
+  ggplot(mapping = aes(x = ISSlocation,
+                       y = ValueL, 
+                       fill = phylum)) + 
+  geom_bar(position = "stack",
+           stat="identity") 
+  labs(x= "ISS Locations",
+     y = "Abundance sqrt(TSS)")
+  
+
+#plot 3: Abundance sqrt(TSS) vs genus(top 40)
+SD2_top_100 %>%
+  ggplot(mapping = aes(x = ISSlocation,
+                       y = ValueL, 
+                       fill = genus)) + 
+  geom_bar(position = "stack",
+           stat="identity") +
+  labs(x= "ISS Locations",
+       y = "Abundance sqrt(TSS)")
+
+
+
 
 
 
