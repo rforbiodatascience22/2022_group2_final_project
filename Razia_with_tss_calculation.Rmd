@@ -1,0 +1,306 @@
+```{r}
+SD1_raw <- 
+  read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1)  %>% 
+  write_csv2(file = "./data/SD1_converted.csv") %>% 
+  as_tibble()
+```
+
+
+```{r}
+SD1_clean <- 
+  SD1_raw %>% 
+  mutate(`Taxonomic classification` = str_replace_all(`Taxonomic classification`, pattern = "[:alpha:]__", "")) %>% 
+  separate(col = `Taxonomic classification`, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ';') %>% 
+  na_if("")
+SD1_clean
+```
+
+
+```{r}
+SD1_table_A1 <- 
+  SD1_clean %>%
+  mutate(ISSCapoA1 = sqrt(ISSCapoA1/sum(ISSCapoA1)),
+         ISSCapoA2 = sqrt(ISSCapoA2/sum(ISSCapoA2)),
+         ISSCapoA3 = sqrt(ISSCapoA3/sum(ISSCapoA3)),
+         ISSCapoA4 = sqrt(ISSCapoA4/sum(ISSCapoA4)),
+         ISSCapoA5 = sqrt(ISSCapoA5/sum(ISSCapoA5)),
+         ISSCapoA6 = sqrt(ISSCapoA6/sum(ISSCapoA6)),
+         ISSCapoA7 = sqrt(ISSCapoA7/sum(ISSCapoA7)),
+         ISSCapoA8 = sqrt(ISSCapoA8/sum(ISSCapoA8)),
+         ISSCapoA9 = sqrt(ISSCapoA9/sum(ISSCapoA9)),
+         ISSCapoB1 = sqrt(ISSCapoB1/sum(ISSCapoB1)),
+         ISSCapoB2 = sqrt(ISSCapoB2/sum(ISSCapoB2)),
+         ISSCapoB3 = sqrt(ISSCapoB3/sum(ISSCapoB3)),
+         ISSCapoB4 = sqrt(ISSCapoB4/sum(ISSCapoB4)),
+         ISSCapoB5 = sqrt(ISSCapoB5/sum(ISSCapoB5)),
+         ISSCapoB6 = sqrt(ISSCapoB6/sum(ISSCapoB6)),
+         ISSCapoB7 = sqrt(ISSCapoB7/sum(ISSCapoB7)),
+         ISSCapoB8 = sqrt(ISSCapoB8/sum(ISSCapoB8)),
+         ISSCapoC1 = sqrt(ISSCapoC1/sum(ISSCapoC1)),
+         ISSCapoC2 = sqrt(ISSCapoC2/sum(ISSCapoC2)),
+         ISSCapoC3 = sqrt(ISSCapoC3/sum(ISSCapoC3)),
+         ISSCapoC4 = sqrt(ISSCapoC4/sum(ISSCapoC4)),
+         ISSCapoC5 = sqrt(ISSCapoC5/sum(ISSCapoC5)),
+         ISSCapoC6 = sqrt(ISSCapoC6/sum(ISSCapoC6)),
+         ISSCapoC7 = sqrt(ISSCapoC7/sum(ISSCapoC7)))
+         
+```
+
+
+```{r}
+SD1_data_pivot_longer <- SD1_table_A1 %>% 
+  pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>%
+  pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>%
+  pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7)
+```
+
+
+```{r}
+SD1_data_pivot_longer %>%
+ggplot(mapping = aes(x = ISSCapoA,
+                       y = ValueA,
+                       fill = Domain)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session A",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("lightblue", 
+                               "deepskyblue4"))
+```
+
+```{r}
+SD1_data_pivot_longer %>%
+  ggplot(mapping = aes(x = ISSCapoB,
+                       y = ValueB,
+                       fill = Domain)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session B",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("lightblue", 
+                               "deepskyblue4"))
+```
+
+
+```{r}
+SD1_data_pivot_longer %>%
+  ggplot(mapping = aes(x = ISSCapoC,
+                       y = ValueC,
+                       fill = Domain)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session C",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("lightblue", 
+                               "deepskyblue4"))
+```
+
+
+```{r}
+SD1_data_pivot_longer %>%
+  filter(Phylum == "Actinobacteria"| 
+         Phylum == "Bacteroidetes"| 
+         Phylum == "Firmicutes"| 
+         Phylum == "Proteobacteria") %>%
+  ggplot(mapping = aes(x = ISSCapoA,
+                       y = ValueA,
+                       fill = Phylum)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session A",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+```
+
+
+```{r}
+SD1_data_pivot_longer %>%
+  filter(Phylum == "Actinobacteria"| 
+         Phylum == "Bacteroidetes"| 
+         Phylum == "Firmicutes"| 
+         Phylum == "Proteobacteria") %>%
+  ggplot(mapping = aes(x = ISSCapoB,
+                       y = ValueB,
+                       fill = Phylum)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session B",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+```
+
+
+```{r}
+SD1_data_pivot_longer %>%
+  filter(Phylum == "Actinobacteria"| 
+         Phylum == "Bacteroidetes"| 
+         Phylum == "Firmicutes"| 
+         Phylum == "Proteobacteria") %>%
+  ggplot(mapping = aes(x = ISSCapoC,
+                       y = ValueC,
+                       fill = Phylum)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session C",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_blank()) +
+  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+```
+
+
+```{r}
+SD1_top_100_A <- SD1_table_A1 %>% 
+ pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>% 
+arrange(desc(ValueA)) %>% 
+  top_n(100) 
+```
+
+
+```{r}
+SD1_top_100_A %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  count(Genus)
+```
+
+
+
+
+
+```{r}
+SD1_top_100_A %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  select(Genus, ISSCapoA, ValueA) %>% 
+  ggplot(mapping = aes(x = ISSCapoA,
+                       y = ValueA, 
+                       fill = Genus)) + 
+  geom_bar(position = "stack",
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session A",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
+
+```
+
+```{r}
+SD1_top_100_B <- SD1_table_A1 %>% 
+ pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>% 
+arrange(desc(ValueB)) %>% 
+  top_n(100) 
+```
+
+
+```{r}
+SD1_top_100_B %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  count(Genus)
+```
+
+
+
+
+
+
+```{r}
+SD1_top_100_B %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  select(Genus, ISSCapoB, ValueB) %>% 
+  ggplot(mapping = aes(x = ISSCapoB,
+                       y = ValueB, 
+                       fill = Genus)) + 
+  geom_bar(position = "stack",
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session B",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
+
+```
+
+
+```{r}
+SD1_top_100_C <- SD1_table_A1 %>% 
+ pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7) %>% 
+arrange(desc(ValueC)) %>% 
+  top_n(100) 
+```
+
+
+```{r}
+SD1_top_100_C %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  count(Genus)
+```
+
+
+
+
+```{r}
+SD1_top_100_C %>%
+  replace_na(list(Genus = 'Unknown')) %>%
+  filter(Genus == "Streptococcus" | 
+         Genus == "Corynebacterium" | 
+         Genus == "Lactobacillus" | 
+         Genus == "Acinetobacter" | 
+         Genus == "Staphylococcus" | 
+         Genus == "Unknown") %>%
+  select(Genus, ISSCapoC, ValueC) %>% 
+  ggplot(mapping = aes(x = ISSCapoC,
+                       y = ValueC, 
+                       fill = Genus)) + 
+  geom_bar(position = "stack",
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session C",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
+
+```
+
+
+
+
