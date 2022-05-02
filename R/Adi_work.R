@@ -1,4 +1,4 @@
-#trial of all codes of main project:
+#figure 4 : supplementary data 2 updated version
 
 # Load libraries ----------------------------------------------------------
 library(tidyverse)
@@ -6,7 +6,7 @@ library(readxl)
 library(ggplot2)
 library(reshape2)
 library(patchwork)
-
+library(hilldiv)
 
 # Load data ---------------------------------------------------------------
 SD1_raw <- 
@@ -20,21 +20,25 @@ SD2_raw <-
   write_csv2(file = "./data/SD2_converted.csv") %>% 
   as_tibble()
 
-# Define functions --------------------------------------------------------
-#source(file = "R/99_project_functions.R")
+
+#method 3 using mutate function
+SD2_clean <- SD2_raw
+
+SD2_table <- SD2_clean %>% 
+  mutate (COLA1 = sqrt(COLA1/sum(COLA1)),
+          COLB1 = sqrt(COLB1/sum(COLB1)),
+          N2A = sqrt(N2A/sum(N2A)),
+          N2B = sqrt(N2B/sum(N2B)),
+          N3C1 = sqrt(N3C1/sum(N3C1)),
+          N1C = sqrt(N1C/sum(N1C)))
+View(SD2_table)
 
 
+#data for plot
+SD2_data <- SD2_table %>% 
+  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) 
 
-#day 4 :
 
-#plots for supplementary data 2----------------------------
-#fig4: Shotgun metagenome-based taxonomic information from ISS locations
-
-#create data for fig 4 
-SD2_data <- SD2_clean %>% 
-  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C)
-
-#plot1 (have to figure out the y axis scale )
 plot1 <- SD2_data %>%
   filter(domain == "Archaea" | 
            domain == "Bacteria" | 
@@ -45,49 +49,16 @@ plot1 <- SD2_data %>%
                        fill = domain)) + 
   geom_bar(position = "fill",
            stat="identity") +
+  
   #ylim(0, 15) +
-  scale_y_continuous(labels = scales::percent) +
+  #scale_y_continuous(labels = scales::percent) +
+  #scale_y_continuous(breaks = seq(0, 15, 5), 
+  #limits=c(0, 15))
+  
   labs(x= "ISS Locations",
        y = "Abundance (TSS)") +
+  #names.arg = c("COLA1", "COLB1", "N2A", "N2B", "N3C1", "N1C")) 
   theme(axis.text.x = element_blank())
-#scale_fill_manual(values = c("", "", "", ""))  #how to identify color names to use here?
+#scale_fill_manual(values = c("", "", "", ""))
+
 plot1
-
-#note : have to figure out how to filter all phylum and genus and the y axis scale range
-
-#plot2   
-plot2 <- SD2_data %>%
-  ggplot(mapping = aes(x = ISSlocation,
-                       y = ValueL, 
-                       fill = phylum)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x= "ISS Locations",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank())
-
-plot2
-
-
-#plot 3 
-
-plot3 <- SD2_data %>%
-  filter(Genus == c("Streptococcus", "Corynebacterium", "Lactobacillus", "Acinetobacter", "Staphylococcus", "NA")) %>%
-  ggplot(mapping = aes(x = ISSlocation,
-                       y = ValueL, 
-                       fill = genus)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x= "ISS Locations",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank())
-#scale_fill_manual(values = c("", "", "", "")) 
-
-plot3
-
-
-
-
-
