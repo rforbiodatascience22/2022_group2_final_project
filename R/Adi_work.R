@@ -80,12 +80,22 @@ SD2_table <- SD2_raw %>%
 SD2_top_40 <- SD2_table %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
   arrange(desc(ValueL)) %>% 
-  top_n(500)
+  top_n(100)
 
-
+#plot of value abundance sqrt(TSS) vs phylum 
 SD2_top_40 %>%
   ggplot(mapping = aes(x = ISSlocation,
                        y = ValueL, 
                        fill = phylum)) + 
   geom_bar(position = "stack",
-           stat="identity")
+           stat="identity") 
+
+
+#plot of abundance sqrt(TSS) vs genus (top 40)
+SD2_top_40 %>%
+  ggplot(mapping = aes(x = ISSlocation,
+                       y = ValueL, 
+                       fill = genus)) + 
+  geom_bar(position = "stack",
+           stat="identity") 
+
