@@ -7,11 +7,21 @@ source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
-my_data <- read_tsv(file = "data/01_my_data.tsv")
+
+SD1_raw <- 
+  read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1, na = c(""," ","NA")) %>% 
+  write_csv2(file = "./data/SD1_converted.csv") %>% 
+  as_tibble()
+
+
+SD2_raw <-
+  read_excel(path = "./data/_raw/SD2_excel.xlsx", skip = 1,na = c(""," ","NA")) %>% 
+  write_csv2(file = "./data/SD2_converted.csv") %>% 
+  as_tibble()
 
 
 # Wrangle data ------------------------------------------------------------
-my_data_clean <- my_data # %>% ...
+
 
 
 # Write data --------------------------------------------------------------
