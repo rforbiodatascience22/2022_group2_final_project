@@ -47,6 +47,14 @@ pl3 <- SD1_data_pivot_longer %>%
                                "deepskyblue4")) 
 pl1 + pl2 + pl3
 
+fig1_Domain <- pl1 + pl2 + pl3
+fig1_Domain
+
+ggsave("./doc/images/fig1_Domain.png",
+       width = 3000,
+       height = 1200,
+       units = "px")
+
 pl4 <- SD1_data_pivot_longer %>%
   filter(Phylum == "Actinobacteria"| 
            Phylum == "Bacteroidetes"| 
@@ -100,6 +108,14 @@ pl6 <- SD1_data_pivot_longer %>%
   scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4")) 
 
 pl4 + pl5 + pl6
+
+fig1_Phylum <- pl4 + pl5 + pl6
+fig1_Phylum
+
+ggsave("./doc/images/fig1_Phylum.png",
+       width = 3000,
+       height = 1200,
+       units = "px")
 
 pl7 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
@@ -167,6 +183,14 @@ pl9 <- SD1_data_pivot_longer %>%
 
 pl7 + pl8 + pl9
 
+fig1_Genus <- pl7 + pl8 + pl9
+fig1_Genus
+
+ggsave("./doc/images/fig1_Genus.png",
+       width = 3000,
+       height = 1200,
+       units = "px")
+
 
 # SD2 Plots
 #plot 10 Abundance sqrt(TSS) vs Domain
@@ -188,6 +212,11 @@ pl10 <- SD2_data_pivot_longer %>%
         legend.text = element_text(size = 10)) +
   scale_fill_manual(values = c("green","salmon","violet","darkgreen","skyblue")) 
 
+pl10
+ggsave("./doc/images/fig4_Domain.png",
+       width = 3000,
+       height = 1200,
+       units = "px")
 
 #plot 11: Abundance sqrt(TSS) vs Phylum
 pl11 <- SD2_data_pivot_longer %>%
@@ -203,6 +232,11 @@ pl11 <- SD2_data_pivot_longer %>%
   theme(legend.title = element_text( size = 12), 
         legend.text = element_text(size = 10))
 
+pl11
+ggsave("./doc/images/fig4_Phylum.png",
+       width = 3000,
+       height = 1200,
+       units = "px")
 
 #plot 12: Abundance sqrt(TSS) vs genus(top 40)
 pl12 <- SD2_top_200 %>%
@@ -217,5 +251,10 @@ pl12 <- SD2_top_200 %>%
   theme(legend.title = element_text(size = 12), 
         legend.text = element_text(size = 8))
 
+pl12
+ggsave("./doc/images/fig4_Genus.png",
+       width = 3000,
+       height = 1500,
+       units = "px")
 
 # Write data --------------------------------------------------------------
