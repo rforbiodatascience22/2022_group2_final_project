@@ -1,35 +1,75 @@
-# Load libraries ----------------------------------------------------------
-library("tidyverse")
-library("readxl")
-
-# Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
-
-# Load data ---------------------------------------------------------------
-
-SD1_raw <- 
-  read_excel(path = "./data/_raw/SD1_excel.xlsx", skip = 1, na = c(""," ","NA")) %>% 
-  write_csv2(file = "./data/SD1_converted.csv") %>% 
-  as_tibble()
-
-
-SD2_raw <-
-  read_excel(path = "./data/_raw/SD2_excel.xlsx", skip = 1,na = c(""," ","NA")) %>% 
-  write_csv2(file = "./data/SD2_converted.csv") %>% 
-  as_tibble()
-
-
 # Wrangle data ------------------------------------------------------------
 
 # data wrangling and visualization supplementary data 1
+SD1_clean <- 
+  SD1_raw %>% 
+  mutate(`Taxonomic classification` = str_replace_all(`Taxonomic classification`, pattern = "[:alpha:]__", "")) %>% 
+  separate(col = `Taxonomic classification`, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ';') %>% 
+  na_if("") 
 
+SD1_raw %>% write.csv2(file = "./data/SD1_clean.csv")
 
+SD1_TSS <- 
+  SD1_clean %>%
+  mutate(ISSCapoA1 = ISSCapoA1/sum(ISSCapoA1),
+         ISSCapoA2 = ISSCapoA2/sum(ISSCapoA2),
+         ISSCapoA3 = ISSCapoA3/sum(ISSCapoA3),
+         ISSCapoA4 = ISSCapoA4/sum(ISSCapoA4),
+         ISSCapoA5 = ISSCapoA5/sum(ISSCapoA5),
+         ISSCapoA6 = ISSCapoA6/sum(ISSCapoA6),
+         ISSCapoA7 = ISSCapoA7/sum(ISSCapoA7),
+         ISSCapoA8 = ISSCapoA8/sum(ISSCapoA8),
+         ISSCapoA9 = ISSCapoA9/sum(ISSCapoA9),
+         ISSCapoB1 = ISSCapoB1/sum(ISSCapoB1),
+         ISSCapoB2 = ISSCapoB2/sum(ISSCapoB2),
+         ISSCapoB3 = ISSCapoB3/sum(ISSCapoB3),
+         ISSCapoB4 = ISSCapoB4/sum(ISSCapoB4),
+         ISSCapoB5 = ISSCapoB5/sum(ISSCapoB5),
+         ISSCapoB6 = ISSCapoB6/sum(ISSCapoB6),
+         ISSCapoB7 = ISSCapoB7/sum(ISSCapoB7),
+         ISSCapoB8 = ISSCapoB8/sum(ISSCapoB8),
+         ISSCapoC1 = ISSCapoC1/sum(ISSCapoC1),
+         ISSCapoC2 = ISSCapoC2/sum(ISSCapoC2),
+         ISSCapoC3 = ISSCapoC3/sum(ISSCapoC3),
+         ISSCapoC4 = ISSCapoC4/sum(ISSCapoC4),
+         ISSCapoC5 = ISSCapoC5/sum(ISSCapoC5),
+         ISSCapoC6 = ISSCapoC6/sum(ISSCapoC6),
+         ISSCapoC7 = ISSCapoC7/sum(ISSCapoC7))
 
+SD1_clean %>% write.csv2(file = "./data/SD1_clean_TSS.csv")
+
+SD1_data_pivot_longer <- SD1_clean %>% 
+  pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>%
+  pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>%
+  pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7) %>% 
+  mutate(ISSCapoA = str_replace_all(ISSCapoA, pattern = c('ISSCapoA1' = "Columbus RGSH", 
+                                                          'ISSCapoA2' = "Columbus SCC laptop",
+                                                          'ISSCapoA3' = "Columbus handrails", 
+                                                          'ISSCapoA4' = "Columbus light cover", 
+                                                          'ISSCapoA5' = "Columbus air", 
+                                                          'ISSCapoA6' = "Node2 sleeping unit",
+                                                          'ISSCapoA7' = "Node2 panel outside",
+                                                          'ISSCapoA8' = "Node2 ATU",
+                                                          'ISSCapoA9' = "Node2 RGSH")),
+         ISSCapoB = str_replace_all(ISSCapoB, pattern = c('ISSCapoB1' = "Columbus RGSH", 
+                                                          'ISSCapoB2' = "Columbus SCC laptop",
+                                                          'ISSCapoB3' = "Columbus handrails", 
+                                                          'ISSCapoB4' = "Columbus light cover", 
+                                                          'ISSCapoB5' = "Columbus air", 
+                                                          'ISSCapoB6' = "Node2 sleeping unit",
+                                                          'ISSCapoB7' = "Node2 panel outside",
+                                                          'ISSCapoB8' = "Node2 ATU")),
+         ISSCapoC = str_replace_all(ISSCapoC, pattern = c('ISSCapoC1' = "Columbus RGSH", 
+                                                          'ISSCapoC2' = "Columbus SCC laptop",
+                                                          'ISSCapoC3' = "Columbus handrails", 
+                                                          'ISSCapoC4' = "Columbus light cover" , 
+                                                          'ISSCapoC5' = "Columbus air", 
+                                                          'ISSCapoC6' = "Node2 sleeping unit",
+                                                          'ISSCapoC7' = "Node2 panel outside")))
 
 
 # data wrangling and visualization supplementary data 2
-SD2_clean <- SD2_raw %>% 
+SD2_clean_TSS <- SD2_raw %>% 
   mutate (COLA1 = sqrt(COLA1/sum(COLA1)),
           COLB1 = sqrt(COLB1/sum(COLB1)),
           N2A = sqrt(N2A/sum(N2A)),
@@ -37,62 +77,22 @@ SD2_clean <- SD2_raw %>%
           N3C1 = sqrt(N3C1/sum(N3C1)),
           N1C = sqrt(N1C/sum(N1C)))
 
+SD2_clean_TSS %>% write.csv2(file = "./data/SD2_clean_TSS.csv")
 
 #data for figure 4: supplementary data 2
-SD2_data <- SD2_clean %>% 
+SD2_data_pivot_longer <- SD2_clean_TSS %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) 
 
-#plot 1 Abundance sqrt(TSS) vs domain
-plot1 <- SD2_data %>%
-  filter(domain == "Archaea" | 
-           domain == "Bacteria" | 
-           domain == "Eukaryota" | 
-           domain == "Viruses")  %>%
-  ggplot(mapping = aes(x = ISSlocation,
-                       y = ValueL, 
-                       fill = domain)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  labs(x= "ISS Locations",
-       y = "Abundance sqrt(TSS)") +
-  theme(axis.text.x = element_blank())
-#scale_fill_manual(values = c("", "", "", ""))
-plot1
+#Tidy Table 1
+table1_tidy <- 
+  table1 %>% 
+  mutate(`Wipe` = str_replace_all(`Wipe`, pattern = "-", "")) %>% 
+  separate(col = Wipe, into = c("Wipe1", "Wipe2"), sep = ",") %>% 
+  separate(col = Session, into = c("Session1", "Session2"), sep = ",") %>% 
+  pivot_longer(cols = c("Wipe1", "Wipe2"), values_to = "Wipe") %>% 
+  select(-name) %>% 
+  pivot_longer(cols = c("Session1", "Session2"), values_to = "Session") %>% 
+  select(-name) %>% 
+  drop_na()
 
-
-
-#data for plot 2 and plot 3
-SD2_top_100 <- SD2_clean %>% 
-  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
-  arrange(desc(ValueL)) %>% 
-  top_n(100)
-
-#plot 2: Abundance sqrt(TSS) vs phylum
-SD2_top_100 %>%
-  ggplot(mapping = aes(x = ISSlocation,
-                       y = ValueL, 
-                       fill = phylum)) + 
-  geom_bar(position = "stack",
-           stat="identity") 
-  labs(x= "ISS Locations",
-     y = "Abundance sqrt(TSS)")
-  
-
-#plot 3: Abundance sqrt(TSS) vs genus(top 40)
-SD2_top_100 %>%
-  ggplot(mapping = aes(x = ISSlocation,
-                       y = ValueL, 
-                       fill = genus)) + 
-  geom_bar(position = "stack",
-           stat="identity") +
-  labs(x= "ISS Locations",
-       y = "Abundance sqrt(TSS)")
-
-
-
-
-
-
-# Write data --------------------------------------------------------------
-write_tsv(x = my_data_clean,
-          file = "data/02_my_data_clean.tsv")
+table1_tidy %>% write.csv2(file = "./data/table1_tidy.csv")

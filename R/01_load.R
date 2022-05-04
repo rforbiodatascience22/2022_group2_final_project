@@ -1,13 +1,7 @@
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
 library("readxl")
-library(reshape2)
-install.packages("patchwork")
-library(patchwork)
-
-# Define functions --------------------------------------------------------
-#source(file = "R/99_project_functions.R")
-
+library("patchwork")
 
 # Load data ---------------------------------------------------------------
 
@@ -22,153 +16,25 @@ SD2_raw <-
   write_csv2(file = "./data/SD2_converted.csv") %>% 
   as_tibble()
 
-# Wrangle data ------------------------------------------------------------
+table1 <- tribble(
+  ~Wipe, ~Sampled_surface, ~ISS_module, ~Session,
+  c("A-5,B-1"), "Ambient air (field blank, FB)", "Columbus", c("A,B"),
+  c("A-4,B-2"), "Light covers", "Columbus", c("A,B"),
+  c("A-2,B-3"), "SCC laptop", "Columbus", c("A,B"),
+  c("A-3,B-4"), "Hand grips", "Columbus", c("A,B"),
+  c("A-1,B-5"), "Return Grid Sensor Housing (RGSH)", "Columbus", c("A,B"),
+  c("A-6,B-6"), "Sleeping unit", "Node 2", c("A,B"),
+  c("A-7,B-7"), "Panels (outer surface, close to the Portable Fire Extinguisher (PFA) and Portable Breathing", "Node 2", c("A,B"),
+  c("A-8,B-8"), "Audio Terminal Unit (ATU)", "Node2", c("A,B"),
+  "A-9", "Return Grid Sensor Housing (RGSH)", "Node 2", "A",
+  "C-1", "Ambient air (field blank, FB)", "Cupola", "C",
+  "C-2", "Surface facing a window", "Cupola", "C",
+  "C-3", "Advanced Resistive Exercise Device (ARED)", "Node 3", "C",
+  "C-4", "Treadmill", "Node 3", "C", 
+  "C-5", "Waste and Hygiene Compartment (WHC): surfaces", "Node 3", "C",
+  "C-6", "Cover of the PBA, inside", "Node 1", "C", 
+  "C-7", "Dining table", "Node 1", "C") 
 
-#Wrangling Supplementary data1
-
-SD1_clean <- 
-  SD1_raw %>% 
-  mutate(`Taxonomic classification` = str_replace_all(`Taxonomic classification`, pattern = "[:alpha:]__", "")) %>% 
-  separate(col = `Taxonomic classification`, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ';') %>% 
-  na_if("")
-SD1_clean
-
-#Creating data1 and plot 1 for ISS Session A,  Stratified with domain
-
-data1<- 
-  SD1_clean %>%
-  gather(key = ISSCapoA, value= ValueA, ISSCapoA1:ISSCapoA9) 
-data1
-pl1 <- ggplot(data1, aes(fill=domain, y=ValueA, x=ISSCapoA)) + 
-  geom_bar(position = "fill", stat="identity") +
-  scale_y_continuous(labels = scales::percent)+
-  labs(x= "ISS session A",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank())+
-  scale_fill_manual(values = c("lightblue", "deepskyblue4"))
-pl1
-
-
-#Creating data2 and plot 2 for ISS Session B,  Stratified with domain
-
-data2 <- SD1_clean %>%
-  gather(key = ISSCapoB, value= ValueB, ISSCapoB1:ISSCapoB8)
-data2
-pl2 <- ggplot(data2, aes(fill=domain, y=ValueB, x=ISSCapoB)) + 
-  geom_bar(position = "fill", stat="identity")+
-  scale_y_continuous(labels = scales::percent)+
-  labs(x= "ISS session B",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank())+
-  scale_fill_manual(values = c("lightblue", "deepskyblue4"))
-pl2
-
-
-#Creating data3 and plot 3 for ISS Session C,  Stratified with domain
-
-data3 <- SD1_clean %>%
-  gather(key = ISSCapoC, value= ValueC, ISSCapoC1:ISSCapoC7)
-data3
-pl3 <- ggplot(data3, aes(fill=domain, y=ValueC, x=ISSCapoC)) + 
-  geom_bar(position = "fill", stat="identity") +
-  scale_y_continuous(labels = scales::percent)+
-  labs(x= "ISS session C",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank())+
-  scale_fill_manual(values = c("lightblue", "deepskyblue4"))
-pl3
-
-
-
-#combining 3 plots together
-
-pl1+pl2+pl3
-
-
-# Creating  plot 4 for ISS Session A,  Stratified with phylum
-
-pl4 <- data1 %>%
-  filter(phylum == "Actinobacteria" | 
-           phylum == "Bacteroidetes" | 
-           phylum == "Firmicutes" | 
-           phylum == "Proteobacteria") %>%
-   ggplot(mapping = aes(fill=phylum, 
-                       y=ValueA, 
-                       x=ISSCapoA)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x= "ISS session A",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
-  scale_fill_manual(values = c("beige", "coral1", "darkorange", "blueviolet"))
-pl4
-
-
-# Creating  plot 5 for ISS Session B,  Stratified with phylum
-
-pl5 <- data2 %>%
-  filter(phylum == "Actinobacteria" | 
-           phylum == "Bacteroidetes" | 
-           phylum == "Firmicutes" | 
-           phylum == "Proteobacteria") %>%
-  ggplot(mapping = aes(x=ISSCapoB,
-                       y=ValueB, 
-                       fill=phylum)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x= "ISS session B",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
-  scale_fill_manual(values = c("beige", "coral1", "darkorange", "blueviolet"))
-pl5
-
-
-# Creating  plot 6 for ISS Session C,  Stratified with phylum
-
-pl6 <- data3 %>%
-  filter(phylum == "Actinobacteria" | 
-           phylum == "Bacteroidetes" | 
-           phylum == "Firmicutes" | 
-           phylum == "Proteobacteria")  %>%
-  ggplot(mapping = aes(x=ISSCapoC,
-                       y=ValueC, 
-                       fill=phylum)) + 
-  geom_bar(position = "fill",
-           stat="identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x= "ISS session C",
-       y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
-  scale_fill_manual(values = c("beige", "coral1", "darkorange", "blueviolet"))
-pl6
-
-
-#Combining pl4+pl5+pl6
-
-pl4+pl5+pl6
-
-
-
-
-
-
-
-SD2_clean <- SD2_raw
-
-
-# Write data --------------------------------------------------------------
-write_tsv(x = my_data,
-          file = "data/01_my_data.tsv")
-
-
-
-
-
-
-
-
-
+table1 %>% write.csv2(file = "./data/_raw/table1_raw.csv")
 
 
