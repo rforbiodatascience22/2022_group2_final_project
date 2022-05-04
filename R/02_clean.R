@@ -83,6 +83,12 @@ SD2_clean_TSS %>% write.csv2(file = "./data/SD2_clean_TSS.csv")
 SD2_data_pivot_longer <- SD2_clean_TSS %>% 
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) 
 
+#data for plot 11 and plot 12
+SD2_top_100 <- SD2_clean_TSS %>% 
+  pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
+  arrange(desc(ValueL)) %>% 
+  top_n(100)
+
 #Tidy Table 1
 table1_tidy <- 
   table1 %>% 
