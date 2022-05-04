@@ -5,7 +5,6 @@ SD1_raw <-
   as_tibble()
 ```
 
-
 ```{r}
 SD1_clean <- 
   SD1_raw %>% 
@@ -14,7 +13,6 @@ SD1_clean <-
   na_if("")
 SD1_clean
 ```
-
 
 ```{r}
 SD1_table <- 
@@ -45,28 +43,60 @@ SD1_table <-
          ISSCapoC7 = ISSCapoC7/sum(ISSCapoC7))
 ```
 
-
-
-
-
 ```{r}
 SD1_data_pivot_longer <- SD1_table %>% 
   pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>%
   pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>%
   pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7)
 ```
+
+```{r}
+SD1_data_rename <- SD1_data_pivot_longer %>%
+  mutate(ISSCapoA = str_replace_all(ISSCapoA, pattern = c('ISSCapoA1' = "Columbus RGSH", 
+                                                          'ISSCapoA2' = "Columbus SCC laptop",
+                                                          'ISSCapoA3' = "Columbus handrails", 
+                                                          'ISSCapoA4' = "Columbus light cover", 
+                                                          'ISSCapoA5' = "Columbus air", 
+                                                          'ISSCapoA6' = "Node2 sleeping unit",
+                                                          'ISSCapoA7' = "Node2 panel outside",
+                                                          'ISSCapoA8' = "Node2 ATU",
+                                                          'ISSCapoA9' = "Node2 RGSH")),
+         ISSCapoB = str_replace_all(ISSCapoB, pattern = c('ISSCapoB1' = "Columbus RGSH", 
+                                                          'ISSCapoB2' = "Columbus SCC laptop",
+                                                          'ISSCapoB3' = "Columbus handrails", 
+                                                          'ISSCapoB4' = "Columbus light cover", 
+                                                          'ISSCapoB5' = "Columbus air", 
+                                                          'ISSCapoB6' = "Node2 sleeping unit",
+                                                          'ISSCapoB7' = "Node2 panel outside",
+                                                          'ISSCapoB8' = "Node2 ATU")),
+         ISSCapoC = str_replace_all(ISSCapoC, pattern = c('ISSCapoC1' = "Columbus RGSH", 
+                                                          'ISSCapoC2' = "Columbus SCC laptop",
+                                                          'ISSCapoC3' = "Columbus handrails", 
+                                                          'ISSCapoC4' = "Columbus light cover" , 
+                                                          'ISSCapoC5' = "Columbus air", 
+                                                          'ISSCapoC6' = "Node2 sleeping unit",
+                                                          'ISSCapoC7' = "Node2 panel outside")))
 ```
 
 
-
-
-
-
-
-
+```{r}
+pl1 <- SD1_data_rename %>%
+  ggplot(mapping = aes(x = ISSCapoA,
+                       y = ValueA,
+                       fill = Domain)) + 
+  geom_bar(position = "fill", 
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "ISS session A",
+       y = "Abundance (TSS)") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_manual(values = c("lightblue", 
+                               "deepskyblue4"))
+pl1
+```
 
 ```{r}
-SD1_data_pivot_longer %>%
+pl2 <- SD1_data_rename %>%
   ggplot(mapping = aes(x = ISSCapoB,
                        y = ValueB,
                        fill = Domain)) + 
@@ -75,14 +105,15 @@ SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session B",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("lightblue", 
                                "deepskyblue4"))
+pl2
 ```
 
 
 ```{r}
-SD1_data_pivot_longer %>%
+pl3 <- SD1_data_rename %>%
   ggplot(mapping = aes(x = ISSCapoC,
                        y = ValueC,
                        fill = Domain)) + 
@@ -91,25 +122,20 @@ SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session C",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("lightblue", 
                                "deepskyblue4"))
+pl3
 ```
-
-
-```
-
-
-
-
-
-
-
 
 
 
 ```{r}
-SD1_data_pivot_longer %>%
+pl1 + pl2 + pl3
+```
+
+```{r}
+pl4 <- SD1_data_rename %>%
   filter(Phylum == "Actinobacteria"| 
          Phylum == "Bacteroidetes"| 
          Phylum == "Firmicutes"| 
@@ -122,13 +148,14 @@ SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session A",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+pl4
 ```
 
 
 ```{r}
-SD1_data_pivot_longer %>%
+pl5 <- SD1_data_rename %>%
   filter(Phylum == "Actinobacteria"| 
          Phylum == "Bacteroidetes"| 
          Phylum == "Firmicutes"| 
@@ -141,13 +168,14 @@ SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session B",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+pl5
 ```
 
 
 ```{r}
-SD1_data_pivot_longer %>%
+pl6 <- SD1_data_rename %>%
   filter(Phylum == "Actinobacteria"| 
          Phylum == "Bacteroidetes"| 
          Phylum == "Firmicutes"| 
@@ -160,37 +188,18 @@ SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session C",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+pl6
+```
+
+```{r}
+pl4 + pl5 + pl6
 ```
 
 
 ```{r}
-SD1_top_100_A <- SD1_table_A1 %>% 
- pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>% 
-arrange(desc(ValueA)) %>% 
-  top_n(100) 
-```
-
-
-```{r}
-SD1_top_100_A %>%
-  replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
-         Genus == "Corynebacterium" | 
-         Genus == "Lactobacillus" | 
-         Genus == "Acinetobacter" | 
-         Genus == "Staphylococcus" | 
-         Genus == "Unknown") %>%
-  count(Genus)
-```
-
-
-
-
-
-```{r}
-SD1_top_100_A %>%
+pl7 <- SD1_data_rename %>%
   replace_na(list(Genus = 'Unknown')) %>%
   filter(Genus == "Streptococcus" | 
          Genus == "Corynebacterium" | 
@@ -202,43 +211,18 @@ SD1_top_100_A %>%
   ggplot(mapping = aes(x = ISSCapoA,
                        y = ValueA, 
                        fill = Genus)) + 
-  geom_bar(position = "stack",
+  geom_bar(position = "fill",
            stat = "identity") +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session A",
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
-
+pl7
 ```
 
 ```{r}
-SD1_top_100_B <- SD1_table_A1 %>% 
- pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>% 
-arrange(desc(ValueB)) %>% 
-  top_n(100) 
-```
-
-
-```{r}
-SD1_top_100_B %>%
-  replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
-         Genus == "Corynebacterium" | 
-         Genus == "Lactobacillus" | 
-         Genus == "Acinetobacter" | 
-         Genus == "Staphylococcus" | 
-         Genus == "Unknown") %>%
-  count(Genus)
-```
-
-
-
-
-
-
-```{r}
-SD1_top_100_B %>%
+pl8 <- SD1_data_rename %>%
   replace_na(list(Genus = 'Unknown')) %>%
   filter(Genus == "Streptococcus" | 
          Genus == "Corynebacterium" | 
@@ -250,42 +234,18 @@ SD1_top_100_B %>%
   ggplot(mapping = aes(x = ISSCapoB,
                        y = ValueB, 
                        fill = Genus)) + 
-  geom_bar(position = "stack",
+  geom_bar(position = "fill",
            stat = "identity") +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session B",
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
-
+pl8
 ```
 
-
 ```{r}
-SD1_top_100_C <- SD1_table_A1 %>% 
- pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7) %>% 
-arrange(desc(ValueC)) %>% 
-  top_n(100) 
-```
-
-
-```{r}
-SD1_top_100_C %>%
-  replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
-         Genus == "Corynebacterium" | 
-         Genus == "Lactobacillus" | 
-         Genus == "Acinetobacter" | 
-         Genus == "Staphylococcus" | 
-         Genus == "Unknown") %>%
-  count(Genus)
-```
-
-
-
-
-```{r}
-SD1_top_100_C %>%
+pl9 <- SD1_data_rename %>%
   replace_na(list(Genus = 'Unknown')) %>%
   filter(Genus == "Streptococcus" | 
          Genus == "Corynebacterium" | 
@@ -297,16 +257,18 @@ SD1_top_100_C %>%
   ggplot(mapping = aes(x = ISSCapoC,
                        y = ValueC, 
                        fill = Genus)) + 
-  geom_bar(position = "stack",
+  geom_bar(position = "fill",
            stat = "identity") +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session C",
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
-
+pl9
 ```
 
-
+```{r}
+pl7 + pl8 + pl9
+```
 
 
