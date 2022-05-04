@@ -1,5 +1,6 @@
-# Visualise data ----------------------------------------------------------
-#SD 1 Plots
+# Visualize data ----------------------------------------------------------
+
+#SD1 Plots
 pl1 <- SD1_data_pivot_longer %>%
   ggplot(mapping = aes(x = ISSCapoA,
                        y = ValueA,
@@ -166,10 +167,10 @@ pl9 <- SD1_data_pivot_longer %>%
 
 pl7 + pl8 + pl9
 
+
 # SD2 Plots
-#plot 1 Abundance sqrt(TSS) vs domain
-pl10 <- 
-SD2_data_pivot_longer %>%
+#plot 10 Abundance sqrt(TSS) vs Domain
+pl10 <- SD2_data_pivot_longer %>%
   filter(domain == "Archaea" | 
            domain == "Bacteria" | 
            domain == "Eukaryota" |
@@ -179,34 +180,42 @@ SD2_data_pivot_longer %>%
                        y = ValueL, 
                        fill = domain)) + 
   geom_bar(position = "fill",
-           stat="identity") +
-  labs(x= "ISS Locations",
+           stat = "identity") +
+  labs(x = "ISS Locations",
        y = "Abundance sqrt(TSS)") +
-  theme(axis.text.x = element_text(angle = 90)) +
-  scale_fill_manual(values = c("lightgreen", "salmon", "violet", "darkgreen", "skyblue")) 
+  theme(axis.text.x = element_text(),
+        legend.title = element_text( size = 12), 
+        legend.text = element_text(size = 10)) +
+  scale_fill_manual(values = c("green","salmon","violet","darkgreen","skyblue")) 
 
-#plot 2: Abundance sqrt(TSS) vs phylum
-pl11 <-
-SD2_top_100 %>%
+
+#plot 11: Abundance sqrt(TSS) vs Phylum
+pl11 <- SD2_data_pivot_longer %>%
+  filter(domain == "Archaea" | 
+           domain == "Bacteria") %>% 
   ggplot(mapping = aes(x = ISSlocation,
                        y = ValueL, 
                        fill = phylum)) + 
   geom_bar(position = "fill",
-           stat="identity") +
-  labs(x= "ISS Locations",
-       y = "Abundance sqrt(TSS)")
+           stat = "identity") +
+  labs(x = "ISS Locations",
+       y = "Abundance sqrt(TSS)") +
+  theme(legend.title = element_text( size = 12), 
+        legend.text = element_text(size = 10))
 
 
-#plot 3: Abundance sqrt(TSS) vs genus(top 40)
-pl12 <- 
-SD2_top_100 %>%
+#plot 12: Abundance sqrt(TSS) vs genus(top 40)
+pl12 <- SD2_top_200 %>%
   filter(domain == "Bacteria") %>% 
   ggplot(mapping = aes(x = ISSlocation,
                        y = ValueL, 
                        fill = genus)) + 
   geom_bar(position = "fill",
-           stat="identity") +
-  labs(x= "ISS Locations",
-       y = "Abundance sqrt(TSS)")
+           stat = "identity") +
+  labs(x = "ISS Locations",
+       y = "Abundance sqrt(TSS)") +
+  theme(legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 8))
+
 
 # Write data --------------------------------------------------------------
