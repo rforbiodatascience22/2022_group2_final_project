@@ -59,13 +59,13 @@ SD1_data_pivot_longer <- SD1_clean %>%
                                                           'ISSCapoB6' = "Node2 sleeping unit",
                                                           'ISSCapoB7' = "Node2 panel outside",
                                                           'ISSCapoB8' = "Node2 ATU")),
-         ISSCapoC = str_replace_all(ISSCapoC, pattern = c('ISSCapoC1' = "Columbus RGSH", 
-                                                          'ISSCapoC2' = "Columbus SCC laptop",
-                                                          'ISSCapoC3' = "Columbus handrails", 
-                                                          'ISSCapoC4' = "Columbus light cover" , 
-                                                          'ISSCapoC5' = "Columbus air", 
-                                                          'ISSCapoC6' = "Node2 sleeping unit",
-                                                          'ISSCapoC7' = "Node2 panel outside")))
+         ISSCapoC = str_replace_all(ISSCapoC, pattern = c('ISSCapoC1' = "Cupola air", 
+                                                          'ISSCapoC2' = "Cupola surface",
+                                                          'ISSCapoC3' = "Node3 ARED ", 
+                                                          'ISSCapoC4' = "Node3 treadmill" , 
+                                                          'ISSCapoC5' = "Node3 WHC", 
+                                                          'ISSCapoC6' = "Node1 Panel inside",
+                                                          'ISSCapoC7' = "Node1 dinning table")))
 
 
 # data wrangling and visualization supplementary data 2
