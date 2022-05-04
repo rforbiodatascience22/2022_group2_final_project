@@ -19,36 +19,35 @@ SD1_clean
 ```{r}
 SD1_table_A1 <- 
   SD1_clean %>%
-  mutate(ISSCapoA1 = sqrt(ISSCapoA1/sum(ISSCapoA1)),
-         ISSCapoA2 = sqrt(ISSCapoA2/sum(ISSCapoA2)),
-         ISSCapoA3 = sqrt(ISSCapoA3/sum(ISSCapoA3)),
-         ISSCapoA4 = sqrt(ISSCapoA4/sum(ISSCapoA4)),
-         ISSCapoA5 = sqrt(ISSCapoA5/sum(ISSCapoA5)),
-         ISSCapoA6 = sqrt(ISSCapoA6/sum(ISSCapoA6)),
-         ISSCapoA7 = sqrt(ISSCapoA7/sum(ISSCapoA7)),
-         ISSCapoA8 = sqrt(ISSCapoA8/sum(ISSCapoA8)),
-         ISSCapoA9 = sqrt(ISSCapoA9/sum(ISSCapoA9)),
-         ISSCapoB1 = sqrt(ISSCapoB1/sum(ISSCapoB1)),
-         ISSCapoB2 = sqrt(ISSCapoB2/sum(ISSCapoB2)),
-         ISSCapoB3 = sqrt(ISSCapoB3/sum(ISSCapoB3)),
-         ISSCapoB4 = sqrt(ISSCapoB4/sum(ISSCapoB4)),
-         ISSCapoB5 = sqrt(ISSCapoB5/sum(ISSCapoB5)),
-         ISSCapoB6 = sqrt(ISSCapoB6/sum(ISSCapoB6)),
-         ISSCapoB7 = sqrt(ISSCapoB7/sum(ISSCapoB7)),
-         ISSCapoB8 = sqrt(ISSCapoB8/sum(ISSCapoB8)),
-         ISSCapoC1 = sqrt(ISSCapoC1/sum(ISSCapoC1)),
-         ISSCapoC2 = sqrt(ISSCapoC2/sum(ISSCapoC2)),
-         ISSCapoC3 = sqrt(ISSCapoC3/sum(ISSCapoC3)),
-         ISSCapoC4 = sqrt(ISSCapoC4/sum(ISSCapoC4)),
-         ISSCapoC5 = sqrt(ISSCapoC5/sum(ISSCapoC5)),
-         ISSCapoC6 = sqrt(ISSCapoC6/sum(ISSCapoC6)),
-         ISSCapoC7 = sqrt(ISSCapoC7/sum(ISSCapoC7)))
-         
-```
+  mutate(ISSCapoA1 = ISSCapoA1/sum(ISSCapoA1),
+         ISSCapoA2 = ISSCapoA2/sum(ISSCapoA2),
+         ISSCapoA3 = ISSCapoA3/sum(ISSCapoA3),
+         ISSCapoA4 = ISSCapoA4/sum(ISSCapoA4),
+         ISSCapoA5 = ISSCapoA5/sum(ISSCapoA5),
+         ISSCapoA6 = ISSCapoA6/sum(ISSCapoA6),
+         ISSCapoA7 = ISSCapoA7/sum(ISSCapoA7),
+         ISSCapoA8 = ISSCapoA8/sum(ISSCapoA8),
+         ISSCapoA9 = ISSCapoA9/sum(ISSCapoA9),
+         ISSCapoB1 = ISSCapoB1/sum(ISSCapoB1),
+         ISSCapoB2 = ISSCapoB2/sum(ISSCapoB2),
+         ISSCapoB3 = ISSCapoB3/sum(ISSCapoB3),
+         ISSCapoB4 = ISSCapoB4/sum(ISSCapoB4),
+         ISSCapoB5 = ISSCapoB5/sum(ISSCapoB5),
+         ISSCapoB6 = ISSCapoB6/sum(ISSCapoB6),
+         ISSCapoB7 = ISSCapoB7/sum(ISSCapoB7),
+         ISSCapoB8 = ISSCapoB8/sum(ISSCapoB8),
+         ISSCapoC1 = ISSCapoC1/sum(ISSCapoC1),
+         ISSCapoC2 = ISSCapoC2/sum(ISSCapoC2),
+         ISSCapoC3 = ISSCapoC3/sum(ISSCapoC3),
+         ISSCapoC4 = ISSCapoC4/sum(ISSCapoC4),
+         ISSCapoC5 = ISSCapoC5/sum(ISSCapoC5),
+         ISSCapoC6 = ISSCapoC6/sum(ISSCapoC6),
+         ISSCapoC7 = ISSCapoC7/sum(ISSCapoC7))
+  ```
 
 
 ```{r}
-SD1_data_pivot_longer <- SD1_table_A1 %>% 
+SD1_data_piot_longer <- SD1_table_A1 %>% 
   pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>%
   pivot_longer(names_to = "ISSCapoB", values_to = "ValueB", ISSCapoB1 : ISSCapoB8) %>%
   pivot_longer(names_to = "ISSCapoC", values_to = "ValueC", ISSCapoC1 : ISSCapoC7)
