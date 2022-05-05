@@ -235,7 +235,7 @@ pl11 <- SD2_data_pivot_longer %>%
 pl11
 ggsave("./doc/images/fig4_Phylum.png",
        width = 3000,
-       height = 1200,
+       height = 1300,
        units = "px")
 
 #plot 12: Abundance sqrt(TSS) vs genus(top 40)
@@ -254,7 +254,7 @@ pl12 <- SD2_top_200 %>%
 pl12
 ggsave("./doc/images/fig4_Genus.png",
        width = 3000,
-       height = 1500,
+       height = 1600,
        units = "px")
 
 # Write data --------------------------------------------------------------

@@ -1,6 +1,7 @@
 ---
-title: "Group 2: ISS Presentation"
+title: "R for Bio Data Science: Final Presentation"
 author: 
+- Group 2
 - Adi (s212940)
 - Prince (s220520)
 - Razia (s151549)
@@ -20,48 +21,72 @@ library(DiagrammeR)
 library(kableExtra)
 ```
 
-## Introduction to dataset 
+# Introduction
+## Article & Datasets
 - Nature article: Microbial composition on the International Space Station
-- Article plots them in stacked barplots 
-- Two datasets: no. reads per sample, sorted by Taxonomic classification (Domain, Phylum, Genus)
-- Sorted into sampling session (A,B,C)
+- Two sets of stacked bargraphs (fig 1 & 4), describing microbial diversity 
+- Two datasets: 
+  - Grouped by sampling sessions (A,B,C) 
+  - No. reads per unique sample, stratified by Taxonomic classification (Domain, Phylum, Genus)
+- Grouped by sampling sessions (A,B,C), and stratified by taxonomical identification  
 
 ## SD1
-- Supplementary data 1 (fig 1): RSV table (ribosomal sequence variants - OTU alternative)
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+- **Supplementary data 1 (fig 1)**: RSV table (Ribosomal Sequence Variants) </br> 
+
+```{r SD1 table no tax ID, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv2(file = "/cloud/project/data/SD1_converted.csv") %>% 
-  head() %>% 
+  slice(1:3) %>% 
+  select(-`Taxonomic classification`) %>% 
+  kbl() %>%   
+  kable_paper(bootstrap_options = "striped", full_width = TRUE)  
+```
+
+```{r only Tax ID, SD1 table, echo=FALSE, message=FALSE, warning=FALSE}
+read_csv2(file = "/cloud/project/data/SD1_converted.csv") %>% 
+  slice(1:3) %>% 
   select(`Taxonomic classification`) %>% 
   kbl() %>% 
-  kableExtra::kable_minimal()  
+  kable_paper(bootstrap_options = "striped", full_width = TRUE)  
 ```
+
 ## SD2
-- Supplementary data 2 (fig 4): Taxonomic diversity inferred from metagenomic dataset  
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+- **Supplementary data 2 (fig 4)**: Taxonomic diversity inferred from metagenomic dataset  
+```{r SD2 table (no reads), echo=FALSE, message=FALSE, warning=FALSE}
 read_csv2(file = "/cloud/project/data/SD2_converted.csv") %>% 
-  head() %>% 
-#  select(`Taxonomic classification`) %>% 
+  slice(1:2) %>% 
+  select(1:6) %>% 
   kbl() %>% 
-  kableExtra::kable_minimal() 
+  kable_paper(bootstrap_options = "striped", full_width = TRUE) 
+```
+
+```{r SD2 table (only reads), echo=FALSE, message=FALSE, warning=FALSE}
+read_csv2(file = "/cloud/project/data/SD2_converted.csv") %>% 
+  select(7:12) %>% 
+  slice(1:3) %>% 
+  kbl() %>% 
+  kable_paper(bootstrap_options = "striped", full_width = TRUE) 
 ```
 ## Table 1
-- Table 1 (tidy): sampling locations and sampling sessions
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+- **Table 1 (tidy)**: sampled surfaces, locations, Wide ID and session ID
+```{r Table 1, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv2(file = "/cloud/project/data/table1_tidy.csv") %>% 
-#  head() %>% 
-  select(-1) %>% 
   slice(1:10) %>% 
+  select(-1) %>%
   kbl() %>% 
-  kableExtra::kable_minimal() 
+  kable_paper(bootstrap_options = "striped", full_width = TRUE) 
+
+  #kableExtra::kable_minimal() 
 ```
 
 ## Data Processing Workflow
-```{r Data Processing Flowchart }
+<center>
+```{r Data Processing Flowchart}
 DiagrammeR::grViz("digraph {
   graph [layout = dot, rankdir = TB]
   
-  node [shape = rectangle]        
-  rec1 [label = 'Import: .xlsx -> .csv']
+  node [shape = rectangle,
+  fontname = Helvetica]        
+  rec1 [label = 'Import: .xlsx > .csv > R object']
   rec2 [label = 'Tidy: (remove unused Tax IDs)']
   rec3 [label =  'Wrangle: Normalise & rename columns, pivot_longer()']
   rec4 [label = 'Visualise: ggplot2()']
@@ -71,6 +96,7 @@ DiagrammeR::grViz("digraph {
   }",
   height = 500)
 ```
+</center>
 
 # Results & Discussion
 ## Figure 1: Domain
@@ -85,45 +111,65 @@ knitr::include_graphics(c("images/fig1_Phylum.png",
                         "images/Article_fig1_Phylum.png"))
 ```
 
-## Figure 1: Genus
-```{r fig.show = "hold", out.width = "90%", fig.align = "center"} 
-knitr::include_graphics(c("images/fig1_Genus.png",
-                        "images/Article_fig4_Genus.png"))
+## Figure 1: Genus (our plot)
+```{r  out.width = "100%", out.height= "100%", fig.align = "center"} 
+knitr::include_graphics("images/fig1_Genus.png")
 ```
 
-## Figure 1 discussion
-- Phylum: they have an ‘unknown’ section, but we can’t find that in the data
-- Genus: They haven’t normalised, they haven’t provided clean room data, they have multiple sections in barograph not shown in legend, their colour choice is bad: unknown and lactobacillus are very difficult to distinguish
+## Figure 1: Genus (their plot)
+```{r  out.width = "100%", out.height= "100%", fig.align = "center"} 
+knitr::include_graphics("images/Article_fig1_Genus.png")
+```
 
+## Figure 1 Discussion
+- **Phylum**: they have an ‘unknown’ section, but we can’t find that in the data
+- **Genus**: </br>
+  - Bars don't close to 100% </br>
+  - Clean room data inaccessible </br>
+  - Multiple chunks not defined in legend </br>
+  - Bad colour choices: e.g. 'unknown' and 'lactobacillus' difficult to distinguish
 
 ## Figure 4: Domain
-```{r fig.show = "hold", out.width = "90%", out.height = "1%", fig.align = "center"} 
+```{r fig.show = "hold", out.width = "62%", out.height = "62%", fig.align = "center"} 
 knitr::include_graphics(c("images/fig4_Domain.png",
                         "images/Article_fig4_Domain.png"))
 ```
 
 ## Figure 4: Phylum
-```{r fig.show = "hold", out.width = "90%", fig.align = "center"} 
-knitr::include_graphics(c("images/fig1_Phylum.png",
+```{r fig.show = "hold", out.width = "70%", out.height = "70%", fig.align = "center"} 
+knitr::include_graphics(c("images/fig4_Phylum.png",
                         "images/Article_fig4_Phylum.png"))
 ```
 
-## Figure 4: Genus
-```{r fig.show = "hold", out.width = "90%", fig.align = "center"} 
-knitr::include_graphics(c("images/fig1_Genus.png",
-                        "images/Article_fig4_Genus.png"))
+## Figure 4: Genus (our plot)
+```{r  out.width = "95%", out.height = "95%", fig.align = "center"} 
+knitr::include_graphics("images/fig4_Genus.png")
+```
+
+## Figure 4: Genus (their plot)
+```{r fig.show = "hold", out.width = "60%", out.height = "60%", fig.align = "center"} 
+knitr::include_graphics("images/Article_fig4_Genus.png")
 ```
 
 ## Figure 4 Discussion
-- *General*: Their use of `sqrt(TSS)` makes no sense
-- Method of selection unclear; solution: sorted top 100
-- Domain: ‘other sequences’ not visible in out plot, but there is only 1 read 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+- **General**: Their use of `sqrt(TSS)` makes no sense
+- Method of selection unclear </br>
+  - *Solution*: sort by top 200
+`arrange(desc(count)) %>% top_n(200)`
+- **Domain**: ‘other sequences’ not visible in out plot, but there is only 1 read 
+```{r sequence type count, echo=FALSE, message=FALSE, warning=FALSE}
 read_csv2(file = "/cloud/project/data/SD2_clean_TSS.csv") %>% 
   count(domain) %>% 
-  kbl() %>%
-  kable_styling()
+  kbl() 
 ```
-- Genus: we filtered out all non-bacteria 
+- **Genus**: we filtered out all non-bacteria 
 
+# Conclusion
+## Conclusion
+- This study reveals a problem with data reproducibility
+- We discovered that there are many ways to accomplish the same task 
 
+- **Further perspectives & improvements** </br>
+  - Obtaining the clean room data could completely change SD1 </br>
+  - Automate TSS with `purrr()` and SD1 column-renaming by referencing Table 1 <br/>
+  - We tried to recreate the PCoA plot, but the overwhelming amount of ‘zeros’ made it unfeasible 
