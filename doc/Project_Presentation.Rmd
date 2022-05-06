@@ -23,12 +23,11 @@ library(kableExtra)
 
 # Introduction
 ## Article & Datasets
-- Nature article: Microbial composition on the International Space Station
+- Nature article: Mora *et al.*, 2019: Space Station conditions are selective but do not alter microbial characteristics relevant to human health  </br>
+  - https://doi.org/10.1038/s41467-019-11682-z 
 - Two sets of stacked bargraphs (fig 1 & 4), describing microbial diversity 
-- Two datasets: 
-  - Grouped by sampling sessions (A,B,C) 
-  - No. reads per unique sample, stratified by Taxonomic classification (Domain, Phylum, Genus)
-- Grouped by sampling sessions (A,B,C), and stratified by taxonomical identification  
+- Grouped by sampling sessions (A,B,C) 
+- No. reads per unique sample, stratified by Taxonomic classification (Domain, Phylum, Genus)
 
 ## SD1
 - **Supplementary data 1 (fig 1)**: RSV table (Ribosomal Sequence Variants) </br> 
