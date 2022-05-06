@@ -15,6 +15,7 @@ pl1 <- SD1_data_pivot_longer %>%
   scale_fill_manual(values = c("lightblue", 
                                "deepskyblue4"))
 
+
 ggsave(pl1, file = "./results/pl1.jpg")
 
 pl2 <- SD1_data_pivot_longer %>%
@@ -30,7 +31,8 @@ pl2 <- SD1_data_pivot_longer %>%
         axis.title.y = element_blank(),
               legend.position = "none") +
   scale_fill_manual(values = c("lightblue", 
-                               "deepskyblue4")) 
+                               "deepskyblue4"))
+pl2
   
 pl3 <- SD1_data_pivot_longer %>%
   ggplot(mapping = aes(x = ISSCapoC,
@@ -45,6 +47,7 @@ pl3 <- SD1_data_pivot_longer %>%
         axis.title.y = element_blank()) +
   scale_fill_manual(values = c("lightblue", 
                                "deepskyblue4")) 
+
 pl1 + pl2 + pl3
 
 fig1_Domain <- pl1 + pl2 + pl3
@@ -56,10 +59,13 @@ ggsave("./doc/images/fig1_Domain.png",
        units = "px")
 
 pl4 <- SD1_data_pivot_longer %>%
-  filter(Phylum == "Actinobacteria"| 
+    filter(Phylum == "Actinobacteria"| 
            Phylum == "Bacteroidetes"| 
            Phylum == "Firmicutes"| 
-           Phylum == "Proteobacteria") %>%
+           Phylum == "Proteobacteria"|
+           Phylum == "Woesearchaeota_(DHVEG-6)"|
+           Phylum == "Thaumarchaeota"|
+           Phylum == "Euryarchaeota") %>%
   ggplot(mapping = aes(x = ISSCapoA,
                        y = ValueA,
                        fill = Phylum)) + 
@@ -70,13 +76,16 @@ pl4 <- SD1_data_pivot_longer %>%
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90),
         legend.position = "none") +
-  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+  scale_fill_manual(values = c("khaki3", "coral1", "skyblue", "orange1", "darkorchid4", "skyblue", "skyblue"))
 
 pl5 <- SD1_data_pivot_longer %>%
-  filter(Phylum == "Actinobacteria"| 
+    filter(Phylum == "Actinobacteria"| 
            Phylum == "Bacteroidetes"| 
            Phylum == "Firmicutes"| 
-           Phylum == "Proteobacteria") %>%
+           Phylum == "Proteobacteria"|
+           Phylum == "Woesearchaeota_(DHVEG-6)"|
+           Phylum == "Thaumarchaeota"|
+           Phylum == "Euryarchaeota") %>%
   ggplot(mapping = aes(x = ISSCapoB,
                        y = ValueB,
                        fill = Phylum)) + 
@@ -86,15 +95,17 @@ pl5 <- SD1_data_pivot_longer %>%
   labs(x = "ISS session B",
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90),
-        legend.position = "none",
-        axis.title.y = element_blank()) +
-  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4"))
+        legend.position = "none") +
+  scale_fill_manual(values = c("khaki3", "coral1", "skyblue", "orange1", "darkorchid4", "skyblue", "skyblue"))
 
 pl6 <- SD1_data_pivot_longer %>%
-  filter(Phylum == "Actinobacteria"| 
+    filter(Phylum == "Actinobacteria"| 
            Phylum == "Bacteroidetes"| 
            Phylum == "Firmicutes"| 
-           Phylum == "Proteobacteria") %>%
+           Phylum == "Proteobacteria"|
+           Phylum == "Woesearchaeota_(DHVEG-6)"|
+           Phylum == "Thaumarchaeota"|
+           Phylum == "Euryarchaeota") %>%
   ggplot(mapping = aes(x = ISSCapoC,
                        y = ValueC,
                        fill = Phylum)) + 
@@ -103,9 +114,9 @@ pl6 <- SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session C",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_text(angle = 90),
-        axis.title.y = element_blank()) +
-  scale_fill_manual(values = c("khaki3", "coral1", "orange1", "darkorchid4")) 
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_manual(values = c("khaki3", "coral1", "skyblue", "orange1", "darkorchid4", "skyblue", "skyblue"))
+pl6
 
 pl4 + pl5 + pl6
 
@@ -119,7 +130,7 @@ ggsave("./doc/images/fig1_Phylum.png",
 
 pl7 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
+    filter(Genus == "Streptococcus" | 
            Genus == "Corynebacterium" | 
            Genus == "Lactobacillus" | 
            Genus == "Acinetobacter" | 
@@ -140,7 +151,7 @@ pl7 <- SD1_data_pivot_longer %>%
 
 pl8 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
+    filter(Genus == "Streptococcus" | 
            Genus == "Corynebacterium" | 
            Genus == "Lactobacillus" | 
            Genus == "Acinetobacter" | 
@@ -162,7 +173,7 @@ pl8 <- SD1_data_pivot_longer %>%
 
 pl9 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
-  filter(Genus == "Streptococcus" | 
+    filter(Genus == "Streptococcus" | 
            Genus == "Corynebacterium" | 
            Genus == "Lactobacillus" | 
            Genus == "Acinetobacter" | 
@@ -195,7 +206,7 @@ ggsave("./doc/images/fig1_Genus.png",
 # SD2 Plots
 #plot 10 Abundance sqrt(TSS) vs Domain
 pl10 <- SD2_data_pivot_longer %>%
-  filter(domain == "Archaea" | 
+    filter(domain == "Archaea" | 
            domain == "Bacteria" | 
            domain == "Eukaryota" |
            domain == "other sequences" |
