@@ -2,10 +2,10 @@
 title: "R for Bio Data Science: Final Presentation"
 author: 
 - Group 2
-- Adi (s212940)
-- Prince (s220520)
-- Razia (s151549)
-- Yuan (s212420)
+- Adikrishna Murali Mohan (s212940)
+- Prince Ravi Leow (s220520)
+- Razia Shekh (s151549)
+- Yuan Qin (s212420)
 output: ioslides_presentation
 widescreen: true
 ---
@@ -166,9 +166,8 @@ read_csv2(file = "/cloud/project/data/SD2_clean_TSS.csv") %>%
 # Conclusion
 ## Conclusion
 - This study reveals a problem with data reproducibility
-- We discovered that there are many ways to accomplish the same task 
 
 - **Further perspectives & improvements** </br>
-  - Obtaining the clean room data could completely change SD1 </br>
+  - Obtaining the clean room data could completely change figure 1 </br>
   - Automate TSS with `purrr()` and SD1 column-renaming by referencing Table 1 <br/>
   - We tried to recreate the PCoA plot, but the overwhelming amount of ‘zeros’ made it unfeasible 
