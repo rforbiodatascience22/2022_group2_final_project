@@ -1,13 +1,13 @@
 # Wrangle data ------------------------------------------------------------
 
-# data wrangling and visualization supplementary data 1
+# data wrangling supplementary data 1
 SD1_clean <- 
   SD1_raw %>% 
   mutate(`Taxonomic classification` = str_replace_all(`Taxonomic classification`, pattern = "[:alpha:]__", "")) %>% 
   separate(col = `Taxonomic classification`, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ';') %>% 
   na_if("") 
 
-SD1_raw %>% write.csv2(file = "./data/SD1_clean.csv")
+SD1_clean %>% write.csv2(file = "./data/SD1_clean.csv")
 
 SD1_TSS <- 
   SD1_clean %>%
@@ -36,7 +36,7 @@ SD1_TSS <-
          ISSCapoC6 = ISSCapoC6/sum(ISSCapoC6),
          ISSCapoC7 = ISSCapoC7/sum(ISSCapoC7))
 
-SD1_clean %>% write.csv2(file = "./data/SD1_clean_TSS.csv")
+SD1_TSS %>% write.csv2(file = "./data/SD1_clean_TSS.csv")
 
 SD1_data_pivot_longer <- SD1_clean %>% 
   pivot_longer(names_to = "ISSCapoA", values_to = "ValueA", ISSCapoA1 : ISSCapoA9) %>%
@@ -67,8 +67,7 @@ SD1_data_pivot_longer <- SD1_clean %>%
                                                           'ISSCapoC6' = "6.Node1 Panel inside",
                                                           'ISSCapoC7' = "7.Node1 dinning table")))
 
-
-# data wrangling and visualization supplementary data 2
+# data wrangling supplementary data 2
 SD2_clean_TSS <- SD2_raw %>% 
   mutate (COLA1 = sqrt(COLA1/sum(COLA1)),
           COLB1 = sqrt(COLB1/sum(COLB1)),
@@ -88,7 +87,6 @@ SD2_top_200 <- SD2_clean_TSS %>%
   pivot_longer(names_to = "ISSlocation", values_to = "ValueL", COLA1:N1C) %>% 
   arrange(desc(ValueL)) %>% 
   top_n(200)
-
 
 #Tidy Table 1
 table1_tidy <- 
