@@ -15,9 +15,6 @@ pl1 <- SD1_data_pivot_longer %>%
   scale_fill_manual(values = c("lightblue", 
                                "deepskyblue4"))
 
-
-ggsave(pl1, file = "./results/pl1.jpg")
-
 pl2 <- SD1_data_pivot_longer %>%
   ggplot(mapping = aes(x = ISSCapoB,
                        y = ValueB,
@@ -267,5 +264,3 @@ ggsave("./doc/images/fig4_Genus.png",
        width = 3000,
        height = 1600,
        units = "px")
-
-# Write data --------------------------------------------------------------

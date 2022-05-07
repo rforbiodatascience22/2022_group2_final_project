@@ -1,11 +1,11 @@
 ---
 title: "R for Bio Data Science: Final Presentation"
 author: 
-- Group 2
-- Adikrishna Murali Mohan (s212940)
-- Prince Ravi Leow (s220520)
-- Razia Shekh (s151549)
-- Yuan Qin (s212420)
+  - Group 2
+  - Adikrishna Murali Mohan (s212940)
+  - Prince Ravi Leow (s220520)
+  - Razia Shekh (s151549)
+  - Yuan Qin (s212420) 
 output: ioslides_presentation
 widescreen: true
 ---
@@ -121,12 +121,14 @@ knitr::include_graphics("images/Article_fig1_Genus.png")
 ```
 
 ## Figure 1 Discussion
-- **Phylum**: they have an ‘unknown’ section, but we can’t find that in the data
-- **Genus**: </br>
-  - Bars don't close to 100% </br>
-  - Clean room data inaccessible </br>
-  - Multiple chunks not defined in legend </br>
-  - Bad colour choices: e.g. 'unknown' and 'lactobacillus' difficult to distinguish
+- The Domain and Phylum plot can be exactly reproduced.
+- **Domain**: Archaea is present in all 3 sessions.
+- **Phylum**: 3 Archaea species (Woesearchaeota, Thaumarchaeota and Euryarchaeota) detected in Cupola air (C) and Columbus air (B)
+- **Genus:** 
+  - Acinetobacteria is predominant in Columbus air for session A and B, whereas Streptococcus is predominant in session C
+  - Not 100% reproducible 
+    - No access to clean room
+    - Bars don't close to 100% 
 
 ## Figure 4: Domain
 ```{r fig.show = "hold", out.width = "62%", out.height = "62%", fig.align = "center"} 
@@ -151,9 +153,7 @@ knitr::include_graphics("images/Article_fig4_Genus.png")
 ```
 
 ## Figure 4 Discussion
-- **General**: Their use of `sqrt(TSS)` makes no sense
-- Method of selection unclear </br>
-  - *Solution*: sort by top 200
+- Our method of selection: Sort by top 200:
 `arrange(desc(count)) %>% top_n(200)`
 - **Domain**: ‘other sequences’ not visible in out plot, but there is only 1 read 
 ```{r sequence type count, echo=FALSE, message=FALSE, warning=FALSE}
@@ -161,7 +161,9 @@ read_csv2(file = "/cloud/project/data/SD2_clean_TSS.csv") %>%
   count(domain) %>% 
   kbl() 
 ```
-- **Genus**: we filtered out all non-bacteria 
+- Detected sequences of Thaumarchaeota, Nanoarchaeota, Euryarchaeota archaeal signature  reflect the type of surface 
+- Predominance of Propionibacterium reads on all the sample sessions
+- ISS microbiome characterised by abundance of human associated Staphylococcus, Corynebacterium and Streptococcus
 
 # Conclusion
 ## Conclusion
@@ -170,4 +172,9 @@ read_csv2(file = "/cloud/project/data/SD2_clean_TSS.csv") %>%
 - **Further perspectives & improvements** </br>
   - Obtaining the clean room data could completely change figure 1 </br>
   - Automate TSS with `purrr()` and SD1 column-renaming by referencing Table 1 <br/>
+```
+mutate(ISSCapoA1 = ISSCapoA1/sum(ISSCapoA1),
+         ISSCapoA2 = ISSCapoA2/sum(ISSCapoA2),
+         ISSCapoA3 = ISSCapoA3/sum(ISSCapoA3)
+```
   - We tried to recreate the PCoA plot, but the overwhelming amount of ‘zeros’ made it unfeasible 
