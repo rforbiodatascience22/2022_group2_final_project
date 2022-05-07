@@ -46,7 +46,8 @@ pl3 <- SD1_data_pivot_longer %>%
   theme(axis.text.x = element_text(angle = 90),
         axis.title.y = element_blank()) +
   scale_fill_manual(values = c("lightblue", 
-                               "deepskyblue4")) 
+                               "deepskyblue4"))
+pl3
 
 pl1 + pl2 + pl3
 
@@ -77,7 +78,7 @@ pl4 <- SD1_data_pivot_longer %>%
   theme(axis.text.x = element_text(angle = 90),
         legend.position = "none") +
   scale_fill_manual(values = c("khaki3", "coral1", "skyblue", "orange1", "darkorchid4", "skyblue", "skyblue"))
-
+pl4
 pl5 <- SD1_data_pivot_longer %>%
     filter(Phylum == "Actinobacteria"| 
            Phylum == "Bacteroidetes"| 
@@ -135,7 +136,7 @@ pl7 <- SD1_data_pivot_longer %>%
            Genus == "Lactobacillus" | 
            Genus == "Acinetobacter" | 
            Genus == "Staphylococcus" | 
-           Genus == "Unknown") %>%
+           Genus == "Unknown" ) %>%
   select(Genus, ISSCapoA, ValueA) %>% 
   ggplot(mapping = aes(x = ISSCapoA,
                        y = ValueA, 
@@ -145,10 +146,9 @@ pl7 <- SD1_data_pivot_longer %>%
   scale_y_continuous(labels = scales::percent) +
   labs(x = "ISS session A",
        y = "Abundance (TSS)") +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "none") +
+  theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
-
+pl7
 pl8 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
     filter(Genus == "Streptococcus" | 
@@ -168,9 +168,9 @@ pl8 <- SD1_data_pivot_longer %>%
        y = "Abundance (TSS)") +
   theme(axis.text.x = element_text(angle = 90),
         axis.title.y = element_blank()) +
-  theme(legend.position = "none") +
+  theme() +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4")) 
-
+pl8
 pl9 <- SD1_data_pivot_longer %>%
   replace_na(list(Genus = 'Unknown')) %>%
     filter(Genus == "Streptococcus" | 
@@ -191,7 +191,7 @@ pl9 <- SD1_data_pivot_longer %>%
   theme(axis.text.x = element_text(angle = 90),
         axis.title.y = element_blank()) +
   scale_fill_manual(values = c("khaki2", "palevioletred3", "skyblue", "orange", "violet", "turquoise4"))
-
+pl9
 pl7 + pl8 + pl9
 
 fig1_Genus <- pl7 + pl8 + pl9
